@@ -21,11 +21,15 @@ class AssociationRuleCFRunner:
                                       columns=user_item_matrix.columns)
 
     # 결과를 ItemId1, ItemId2, Score 형식으로 변환
-    item_similarity_melt = item_similarity_df.reset_index().melt(id_vars='antecedent', var_name='consequent', value_name='score')
+    item_similarity_melt = item_similarity_df.reset_index().melt(id_vars='itemId', var_name='ItemId2', value_name='Score')
 
     # 자기 자신과의 유사도(1인 값) 제거
-    item_similarity_melt = item_similarity_melt[item_similarity_melt['antecedent'] != item_similarity_melt['consequent']]
-    sorted_df = item_similarity_melt.sort_values(by=['antecedent', 'consequent'])
+    item_similarity_melt = item_similarity_melt[item_similarity_melt['itemId'] != item_similarity_melt['ItemId2']]
+    sorted_df = item_similarity_melt.sort_values(by=['itemId', 'ItemId2'])
+
+    # 칼럼 이름을 itemid에서 antecedent consequent 로 변경
+    sorted_df.rename(columns={'itemId': 'antecedent'}, inplace=True)
+    sorted_df.rename(columns={'ItemId2': 'consequent'}, inplace=True)
 
     # Save the association rules to a CSV file
     sorted_df.to_csv(self.output_data_path, index=False)
