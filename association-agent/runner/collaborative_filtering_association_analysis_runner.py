@@ -9,6 +9,10 @@ class AssociationRuleCFRunner:
   def run(self):
     df = pd.read_csv(self.input_data_path)
 
+    if len(df.columns) != 2:
+     df = df[df.columns[:2]]
+    df.columns = ['userId', 'itemId']
+
     # 사용자-아이템 매트릭스 생성 (user-item interaction matrix)
     user_item_matrix = df.pivot_table(index='userId', columns='itemId', aggfunc='size', fill_value=0)
 
