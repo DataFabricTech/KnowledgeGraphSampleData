@@ -2,9 +2,9 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
 class AssociationRuleCFRunner:
-  def __init__(self, args):
-    self.input_data_path = args["input_data_path"]
-    self.output_data_path = args["output_data_path"]
+  def __init__(self, input_data_path, output_data_path):
+    self.input_data_path = input_data_path
+    self.output_data_path = output_data_path
 
   def run(self):
     df = pd.read_csv(self.input_data_path)

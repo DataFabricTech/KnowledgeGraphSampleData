@@ -3,9 +3,9 @@ from mlxtend.preprocessing import TransactionEncoder
 import pandas as pd
 
 class AssociationRuleAnalysisRunner:
-  def __init__(self, args):
-    self.input_data_path = args["input_data_path"]
-    self.output_data_path = args["output_data_path"]
+  def __init__(self, input_data_path, output_data_path):
+    self.input_data_path = input_data_path
+    self.output_data_path = output_data_path
 
   def run(self):
     # Load the mock data

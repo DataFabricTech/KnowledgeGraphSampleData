@@ -14,26 +14,27 @@ if __name__ == "__main__":
   analysis_root_path = "/pvc/mnt/analysis-%s/"%analysis_id
   os.makedirs(analysis_root_path)
 
-  output_data_path = analysis_root_path + "association_rule_result.csv"
+  input_data_path = analysis_root_path + "analysis_input.csv"    
+  output_data_path = analysis_root_path + "analysis_result.csv"
 
   if mode == "mock":
-    generator = ConvergenceDataGenerator()
-    generator.generateDataFrameWithFilePath(mock_input_file_path)
 
-    mock_input_data_path = analysis_root_path + "mock_input_data.csv"    
-    args["input_data_path"] = mock_input_data_path
+    generator = ConvergenceDataGenerator()
+    generator.generateDataFrameWithFilePath(input_data_path)
   else:
     if datasource_type == "MinIO":
       host = args["host"]
       port = args["port"]
       region = args["region"]
+      bucket_name = args["bucket_name"]
       access_key = args["access_key"]
       secret_key = args["secret_key"]
-      input_data_path = args["input_data_path"]
+      data_source_path = args["file_source_path"]
+      loaded_data_path = input_data_path
 
       generator = MinioDataGenerator()
-      generator.fetchMinioDataWithFilePath(host, port, access_key, secret_key, region, input_data_path, output_data_path)
+      generator.fetchMinioDataWithFilePath(host, port, access_key, secret_key, region, bucket_name, data_source_path, loaded_data_path)
 
   if algorithm == "association-analysis":
-    runner = AssociationRuleCFRunner(args)
+    runner = AssociationRuleCFRunner(input_data_path, output_data_path)
     runner.run()
